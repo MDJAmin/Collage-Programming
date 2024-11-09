@@ -18,3 +18,27 @@ int main() {
 
     return 0;
 }
+
+#include <stdio.h>
+#include <math.h>
+
+void calculate_circle_properties(double radius, double *circumference, double *area) {
+    *circumference = 2 * M_PI * radius; 
+    *area = M_PI * (radius * radius);    
+}
+
+int main() {
+    double radius;
+    double circumference, area;
+
+    printf("لطفاً شعاع دایره را وارد کنید: ");
+    
+    scanf("%lf", &radius); 
+
+    calculate_circle_properties(radius, &circumference, &area); 
+
+    printf("محیط دایره: %lf\n", circumference);
+    printf("مساحت دایره: %lf\n", area);        
+
+    return 0;
+}
