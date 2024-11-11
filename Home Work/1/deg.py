@@ -8,7 +8,7 @@ def cel_to_frh(cel):
     # 32°F and the boiling point at 212°F.
     return frh
 
-    cel = float(input("enter the"))
+    cel = float(input("👾 Please enter the temperature in Celsius : "))
     frh = cel_to_frh(cel)
     print("temperature{frh}")
 
