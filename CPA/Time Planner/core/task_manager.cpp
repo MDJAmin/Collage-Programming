@@ -3,143 +3,165 @@
 #include <vector>
 #include <string>
 #include <sstream>
-
 using namespace std;
-
-struct Task {
+class Task
+{
     string title;
-    string deadline;
-    bool completed;
+    string due;
+    bool isDone;
+
+    friend class TaskHandler;
+
+public:
+    Task(const string &t, const string &d, bool done = false)
+        : title(t), due(d), isDone(done) {}
+
+    string toLine() const
+    {
+        return title + "," + due + "," + (isDone ? "done" : "pending");
+    }
+
+    static Task fromLine(const string &row)
+    {
+        stringstream ss(row);
+        string t, d, s;
+        getline(ss, t, ',');
+        getline(ss, d, ',');
+        getline(ss, s, ',');
+        return Task(t, d, s == "done");
+    }
+
+    void show(int i) const
+    {
+        cout << i << ". [" << (isDone ? "✔" : "✖") << "] " << title << " (Due: " << due << ")\n";
+    }
 };
 
-void saveTasks(const vector<Task>& tasks);
-vector<Task> loadTasks();
-void displayTasks(const vector<Task>& tasks);
-void addTask(vector<Task>& tasks);
-void markTaskComplete(vector<Task>& tasks);
-void deleteTask(vector<Task>& tasks);
+class TaskHandler
+{
+    vector<Task> list;
+    const string dbFile = "tasks.txt";
 
-const string FILE_NAME = "tasks.txt";
+    void fetch()
+    {
+        list.clear();
+        ifstream in(dbFile);
+        string r;
+        while (getline(in, r))
+            list.push_back(Task::fromLine(r));
+    }
 
-int main() {
-    vector<Task> tasks = loadTasks();
-    int choice;
+    void save() const
+    {
+        ofstream out(dbFile);
+        for (const auto &t : list)
+            out << t.toLine() << "\n";
+    }
 
-    do {
-        cout << "\n===== Task Manager =====\n";
-        cout << "1. View Tasks\n2. Add Task\n3. Mark Task as Completed\n4. Delete Task\n5. Exit\n";
-        cout << "Choose an option: ";
-        cin >> choice;
-        cin.ignore();
+public:
+    TaskHandler() { fetch(); }
 
-        switch (choice) {
-            case 1: displayTasks(tasks); break;
-            case 2: addTask(tasks); break;
-            case 3: markTaskComplete(tasks); break;
-            case 4: deleteTask(tasks); break;
-            case 5: cout << "Exiting...\n"; break;
-            default: cout << "Invalid choice! Try again.\n";
+    void showAll() const
+    {
+        if (list.empty())
+        {
+            cout << "،There is no task! Add something!?\n";
+            return;
         }
-    } while (choice != 5);
+        cout << "\nTasks:\n";
+        for (size_t i = 0; i < list.size(); ++i)
+            list[i].show(static_cast<int>(i + 1));
+    }
+
+    void newTask()
+    {
+        string t, d;
+        cout << "Title:";
+        cin.ignore();
+        getline(cin, t);
+        cout << "Deadline (YYYY-MM-DD): ";
+        getline(cin, d);
+        list.emplace_back(t, d);
+        save();
+        cout << "Added!\n";
+    }
+
+    void complete()
+    {
+        if (list.empty())
+        {
+            cout << "Nothing to complete. :]\n";
+            return;
+        }
+        showAll();
+        int idx;
+        cout << "Which one? ";
+        cin >> idx;
+        if (idx < 1 || idx > static_cast<int>(list.size()))
+        {
+            cout << "Invalid number!\n";
+            return;
+        }
+        list[idx - 1].isDone = true;
+        save();
+        cout << "Marked complete.\n";
+    }
+
+    void removeTask()
+    {
+        if (list.empty())
+        {
+            cout << "Nothing to remove.\n";
+            return;
+        }
+        showAll();
+        int i;
+        cout << "Delete which? ";
+        cin >> i;
+        if (i < 1 || i > static_cast<int>(list.size()))
+        {
+            cout << "That number doesn't exist. :(\n";
+            return;
+        }
+        list.erase(list.begin() + i - 1);
+        save();
+        cout << "Removed.👌🏻\n";
+    }
+};
+
+int main()
+{
+    TaskHandler th;
+    int opt = 0;
+
+    while (opt != 5)
+    {
+        cout << "\n===== Task App =====\n";
+        cout << "1. Show\n2. Add\n3. Complete\n4. Remove\n5. Quit\n";
+        cout << "Pick one: ";
+        cin >> opt;
+
+        switch (opt)
+        {
+        case 1:
+            th.showAll();
+            break;
+        case 2:
+            th.newTask();
+            break;
+        case 3:
+            th.complete();
+            break;
+        case 4:
+            th.removeTask();
+            break;
+        case 5:
+            cout << "Bye!\n";
+            break;
+        default:
+            cout << "Not valid. Again.\n";
+        }
+    }
 
     return 0;
-}
-
-vector<Task> loadTasks() {
-    vector<Task> tasks;
-    ifstream file(FILE_NAME);
-
-
-    string line;
-    while (getline(file, line)) {
-        stringstream ss(line);
-        string title, deadline, status;
-        getline(ss, title, ',');
-        getline(ss, deadline, ',');
-        getline(ss, status, ',');
-
-        bool completed = (status == "done");
-        tasks.push_back({title, deadline, completed});
-    }
-
-    file.close();
-    return tasks;
-}
-
-void saveTasks(const vector<Task>& tasks) {
-    ofstream file(FILE_NAME);
-    for (const auto& task : tasks) {
-        file << task.title << "," << task.deadline << "," << (task.completed ? "done" : "pending") << "\n";
-    }
-    file.close();
-}
-
-void displayTasks(const vector<Task>& tasks) {
-    if (tasks.empty()) {
-        cout << "✨ No tasks available. Add one! ✨\n";
-        return;
-    }
-
-    cout << "\n📌 Task List:\n";
-    for (size_t i = 0; i < tasks.size(); i++) {
-        cout << i + 1 << ". [" << (tasks[i].completed ? "✔" : "✖") << "] " << tasks[i].title 
-             << " (Due: " << tasks[i].deadline << ")\n";
-    }
-}
-
-void addTask(vector<Task>& tasks) {
-    Task newTask;
-    cout << "Enter task title: ";
-    getline(cin, newTask.title);
-    cout << "Enter deadline (YYYY-MM-DD): ";
-    getline(cin, newTask.deadline);
-    newTask.completed = false;
-
-    tasks.push_back(newTask);
-    saveTasks(tasks);
-    cout << "✅ Task added successfully!\n";
-}
-
-void markTaskComplete(vector<Task>& tasks) {
-    if (tasks.empty()) {
-        cout << "No tasks available to mark as completed.\n";
-        return;
-    }
-
-    displayTasks(tasks);
-    int index;
-    cout << "Enter task number to mark as completed: ";
-    cin >> index;
-    cin.ignore();
-
-    if (index < 1 || index > tasks.size()) {
-        cout << "❌ Invalid task number!\n";
-        return;
-    }
-
-    tasks[index - 1].completed = true;
-    saveTasks(tasks);
-    cout << "✅ Task marked as completed!\n";
-}
-
-void deleteTask(vector<Task>& tasks) {
-    if (tasks.empty()) {
-        cout << "No tasks available to delete.\n";
-        return;
-    }
-
-    displayTasks(tasks);
-    int index;
-    cout << "Enter task number to delete: ";
-    cin >> index;
-    cin.ignore();
-
-    if (index < 1 || index > tasks.size()) {
-        cout << "❌ Invalid task number!\n";
-        return;
-    }
-
-    tasks.erase(tasks.begin() + index - 1);
-    saveTasks(tasks);
-    cout << "🗑 Task deleted successfully!\n";
 }
