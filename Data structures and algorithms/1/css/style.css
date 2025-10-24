@@ -7,11 +7,13 @@ body {
   align-items: center;
   justify-content: center;
   height: 90vh;
+  text-align: center;
 }
 
 h1 {
   margin-bottom: 40px;
   color: #00e676;
+  font-size: 2rem;
 }
 
 .towers {
@@ -20,6 +22,7 @@ h1 {
   align-items: flex-end;
   gap: 60px;
   height: 250px;
+  flex-wrap: nowrap;
 }
 
 .tower {
@@ -97,11 +100,14 @@ h1 {
 
 .controls {
   margin-top: 25px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 button {
   padding: 10px 20px;
-  margin: 0 5px;
+  margin: 5px;
   font-size: 16px;
   border: none;
   border-radius: 8px;
@@ -127,6 +133,7 @@ button:disabled {
   color: #ffea00;
   min-height: 24px;
 }
+
 .modal {
   display: none;
   position: fixed;
@@ -139,6 +146,7 @@ button:disabled {
   backdrop-filter: blur(5px);
   overflow: hidden;
 }
+
 .modal-content {
   background-color: #1b1f24;
   color: #00e676;
@@ -183,6 +191,7 @@ button:disabled {
 
 .code-section h3 {
   color: #1de9b6;
+  text-align: left;
 }
 
 pre {
@@ -192,6 +201,7 @@ pre {
   border-radius: 8px;
   overflow-x: auto;
   margin-bottom: 20px;
+  text-align: left;
   box-shadow: 0 0 10px rgba(0, 230, 118, 0.3);
 }
 
@@ -204,4 +214,134 @@ pre {
 
 .code-section::-webkit-scrollbar {
   display: none;
+}
+
+.code-section pre::-webkit-scrollbar {
+  height: 8px;
+  background-color: #101820;
+  border-radius: 4px;
+}
+
+.code-section pre::-webkit-scrollbar-thumb {
+  background-color: #00e676;
+  border-radius: 4px;
+  border: 2px solid #101820;
+}
+
+.code-section pre::-webkit-scrollbar-thumb:hover {
+  background-color: #1de9b6;
+}
+.code-section pre {
+  scrollbar-width: thin;
+  scrollbar-color: #00e676 #101820;
+}
+
+@media (max-width: 768px) {
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  .towers {
+    gap: 25px;
+    height: 200px;
+  }
+
+  .tower {
+    width: 70px;
+    height: 160px;
+  }
+
+  .rod {
+    height: 140px;
+  }
+
+  .disk {
+    font-size: 10px;
+    height: 16px;
+  }
+
+  .disk1 {
+    width: 30px;
+  }
+  .disk2 {
+    width: 45px;
+  }
+  .disk3 {
+    width: 60px;
+  }
+  .disk4 {
+    width: 70px;
+  }
+
+  .tower_card p {
+    padding: 12px 16px;
+    font-size: 14px;
+  }
+
+  .controls {
+    margin-top: 20px;
+    justify-content: center;
+  }
+
+  button {
+    font-size: 14px;
+    padding: 8px 14px;
+  }
+
+  .message {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: 1.1rem;
+  }
+
+  .towers {
+    gap: 18px;
+    height: 160px;
+  }
+
+  .tower {
+    width: 60px;
+    height: 130px;
+  }
+
+  .rod {
+    height: 110px;
+  }
+
+  .disk {
+    font-size: 9px;
+    height: 14px;
+    padding: 5px 0 0 0;
+  }
+  .disk1 {
+    width: 30px;
+  }
+  .disk2 {
+    width: 40px;
+  }
+  .disk3 {
+    width: 50px;
+  }
+  .disk4 {
+    width: 62px;
+  }
+
+  .controls {
+    margin-top: 18px;
+  }
+
+  button {
+    font-size: 13px;
+    padding: 7px 12px;
+    margin: 3px;
+  }
+
+  .tower_card p {
+    padding: 10px 14px;
+    font-size: 13px;
+  }
 }
