@@ -59,7 +59,7 @@ function nextStep() {
     }
     currentMove++;
     if (currentMove === moves.length) {
-      message.textContent = "🎉 Congratulations! All disks moved successfully in 16 moves!";
+      message.textContent = "🎉 Congratulations! All disks moved successfully in 15 moves!";
     }
   }
   updateButtons();
