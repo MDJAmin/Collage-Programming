@@ -6,10 +6,7 @@ function solveComplexFraction() {
 
   let denominator = math.complex("i");
   for (let i = 1; i <= 10; i++) {
-    denominator = math.multiply(
-      denominator,
-      math.complex(`i + ${i}`)
-    );
+    denominator = math.multiply(denominator, math.complex(`i + ${i}`));
   }
 
   const result = math.divide(numeratorCubed, denominator);
