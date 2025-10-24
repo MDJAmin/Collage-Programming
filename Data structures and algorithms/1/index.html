@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <link
+      rel="stylesheet"
+      href="css/style.css"
+    />
+    <link
+      rel="shortcut icon"
+      href="favicon.png"
+      type="image/x-icon"
+    />
+    <title>Tower of Hanoi Game</title>
+  </head>
+  <body>
+    <h1>🎯 Tower of Hanoi - Step by Step</h1>
+
+    <div class="towers">
+      <div class="tower_card">
+        <p>A</p>
+        <div
+          class="tower"
+          id="A"
+        >
+          <div class="rod"></div>
+        </div>
+      </div>
+
+      <div class="tower_card">
+        <p>B</p>
+        <div
+          class="tower"
+          id="B"
+        >
+          <div class="rod"></div>
+        </div>
+      </div>
+
+      <div class="tower_card">
+        <p>C</p>
+        <div
+          class="tower"
+          id="C"
+        >
+          <div class="rod"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="controls">
+      <button id="backBtn">◀</button>
+      <button id="resetBtn">🔁</button>
+      <button id="nextBtn">▶</button>
+      <button id="algoBtn">🧠 See the Algorithm</button>
+    </div>
+
+    <div
+      class="message"
+      id="message"
+    ></div>
+
+    <div
+      id="algoModal"
+      class="modal"
+    >
+      <div class="modal-content">
+        <span
+          id="closeModal"
+          class="close"
+          >&times;</span
+        >
+        <h2>🧠 Tower of Hanoi Algorithm</h2>
+        <div class="code-section">
+          <h3>C++</h3>
+          <pre><code>
+void hanoi(int n, char from, char to, char aux) {
+    if (n == 1) {
+        cout << "Move disk 1 from " << from << " to " << to << endl;
+        return;
+    }
+    hanoi(n - 1, from, aux, to);
+    cout << "Move disk " << n << " from " << from << " to " << to << endl;
+    hanoi(n - 1, aux, to, from);
+}
+          </code></pre>
+
+          <h3>Python</h3>
+          <pre><code>
+def hanoi(n, from_peg, to_peg, aux_peg):
+    if n == 1:
+        print(f"Move disk 1 from {from_peg} to {to_peg}")
+        return
+    hanoi(n-1, from_peg, aux_peg, to_peg)
+    print(f"Move disk {n} from {from_peg} to {to_peg}")
+    hanoi(n-1, aux_peg, to_peg, from_peg)
+          </code></pre>
+
+          <h3>JavaScript</h3>
+          <pre><code>
+function hanoi(n, from, to, aux) {
+  if (n === 1) {
+    console.log(\`Move disk 1 from \${from} to \${to}\`);
+    return;
+  }
+  hanoi(n - 1, from, aux, to);
+  console.log(\`Move disk \${n} from \${from} to \${to}\`);
+  hanoi(n - 1, aux, to, from);
+}
+          </code></pre>
+        </div>
+      </div>
+    </div>
+
+    <script src="js/script.js"></script>
+  </body>
+</html>
