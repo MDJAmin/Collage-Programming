@@ -9,6 +9,9 @@ const message = document.getElementById("message");
 const nextBtn = document.getElementById("nextBtn");
 const backBtn = document.getElementById("backBtn");
 const resetBtn = document.getElementById("resetBtn");
+const algoBtn = document.getElementById("algoBtn");
+const modal = document.getElementById("algoModal");
+const closeModal = document.getElementById("closeModal");
 
 let moves = [];
 let currentMove = 0;
@@ -36,6 +39,12 @@ function hanoi(n, from, to, aux) {
   hanoi(n - 1, aux, to, from);
 }
 
+function updateButtons() {
+  backBtn.disabled = currentMove === 0;
+  nextBtn.disabled = currentMove >= moves.length;
+  resetBtn.disabled = currentMove === 0;
+}
+
 function nextStep() {
   if (currentMove < moves.length) {
     const { from, to } = moves[currentMove];
@@ -44,16 +53,14 @@ function nextStep() {
     const disk = fromTower.querySelector(".disk:last-child");
     if (disk) {
       toTower.appendChild(disk);
-      message.textContent = `Move ${currentMove + 1}: Move ${
-        disk.textContent
-      } from tower ${from} → ${to}`;
+      message.textContent = `Move ${currentMove + 1}: Move ${disk.textContent} from tower ${from} → ${to}`;
     }
     currentMove++;
     if (currentMove === moves.length) {
-      message.textContent = "✅ Congratulations! All disks moved successfully!";
-      nextBtn.disabled = true;
+      message.textContent = "🎉 Congratulations! All disks moved successfully in 16 moves!";
     }
   }
+  updateButtons();
 }
 
 function backStep() {
@@ -65,12 +72,10 @@ function backStep() {
     const disk = toTower.querySelector(".disk:last-child");
     if (disk) {
       fromTower.appendChild(disk);
-      message.textContent = `Undo move ${currentMove + 1}: Move ${
-        disk.textContent
-      } back from ${to} → ${from}`;
+      message.textContent = `Undo move ${currentMove + 1}: Move ${disk.textContent} back from ${to} → ${from}`;
     }
-    nextBtn.disabled = false;
   }
+  updateButtons();
 }
 
 function resetGame() {
@@ -79,11 +84,21 @@ function resetGame() {
   currentMove = 0;
   hanoi(4, "A", "C", "B");
   message.textContent = 'Click "Next Step" to start.';
-  nextBtn.disabled = false;
+  updateButtons();
 }
 
 nextBtn.addEventListener("click", nextStep);
 backBtn.addEventListener("click", backStep);
 resetBtn.addEventListener("click", resetGame);
+
+algoBtn.addEventListener("click", () => {
+  modal.style.display = "block";
+});
+closeModal.addEventListener("click", () => {
+  modal.style.display = "none";
+});
+window.addEventListener("click", (e) => {
+  if (e.target === modal) modal.style.display = "none";
+});
 
 resetGame();
