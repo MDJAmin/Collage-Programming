@@ -57,6 +57,12 @@
       <button id="resetBtn">🔁</button>
       <button id="nextBtn">▶</button>
       <button id="algoBtn">🧠 See the Algorithm</button>
+
+      <div class="disk-control">
+        <button id="decreaseDisk">➖</button>
+        <span id="diskCountDisplay">4 Disks</span>
+        <button id="increaseDisk">➕</button>
+      </div>
     </div>
 
     <div
@@ -76,6 +82,42 @@
         >
         <h2>🧠 Tower of Hanoi Algorithm</h2>
         <div class="code-section">
+          <h3>Pascal</h3>
+          <pre><code>
+program TowerOfHanoi;
+
+procedure hanoi(n: integer; fromPeg, toPeg, auxPeg: char);
+begin
+  if n = 1 then
+    writeln('Move disk 1 from ', fromPeg, ' to ', toPeg)
+  else
+  begin
+    hanoi(n - 1, fromPeg, auxPeg, toPeg);
+    writeln('Move disk ', n, ' from ', fromPeg, ' to ', toPeg);
+    hanoi(n - 1, auxPeg, toPeg, fromPeg);
+  end;
+end;
+
+begin
+  hanoi(3, 'A', 'C', 'B');
+end.
+          </code></pre>
+
+          <h3>C</h3>
+          <pre><code>
+#include &lt;stdio.h&gt;
+
+void hanoi(int n, char from, char to, char aux) {
+    if (n == 1) {
+        printf("Move disk 1 from %c to %c\n", from, to);
+        return;
+    }
+    hanoi(n - 1, from, aux, to);
+    printf("Move disk %d from %c to %c\n", n, from, to);
+    hanoi(n - 1, aux, to, from);
+}
+          </code></pre>
+
           <h3>C++</h3>
           <pre><code>
 void hanoi(int n, char from, char to, char aux) {
@@ -89,20 +131,9 @@ void hanoi(int n, char from, char to, char aux) {
 }
           </code></pre>
 
-          <h3>Python</h3>
+          <h3>TypeScript</h3>
           <pre><code>
-def hanoi(n, from_peg, to_peg, aux_peg):
-    if n == 1:
-        print(f"Move disk 1 from {from_peg} to {to_peg}")
-        return
-    hanoi(n-1, from_peg, aux_peg, to_peg)
-    print(f"Move disk {n} from {from_peg} to {to_peg}")
-    hanoi(n-1, aux_peg, to_peg, from_peg)
-          </code></pre>
-
-          <h3>JavaScript</h3>
-          <pre><code>
-function hanoi(n, from, to, aux) {
+function hanoi(n: number, from: string, to: string, aux: string): void {
   if (n === 1) {
     console.log(\`Move disk 1 from \${from} to \${to}\`);
     return;
@@ -111,6 +142,30 @@ function hanoi(n, from, to, aux) {
   console.log(\`Move disk \${n} from \${from} to \${to}\`);
   hanoi(n - 1, aux, to, from);
 }
+          </code></pre>
+
+          <h3>JavaScript</h3>
+          <pre><code>
+            function hanoi(n, from, to, aux) {
+              if (n === 1) {
+                console.log(`Move disk 1 from ${from} to ${to}`);
+                return;
+              }
+  hanoi(n - 1, from, aux, to);
+  console.log(`Move disk ${n} from ${from} to ${to}`);
+  hanoi(n - 1, aux, to, from);
+}
+          </code></pre>
+
+          <h3>Python</h3>
+          <pre><code>
+        def hanoi(n, from_peg, to_peg, aux_peg):
+        if n == 1:
+        print(f"Move disk 1 from {from_peg} to {to_peg}")
+        return
+        hanoi(n-1, from_peg, aux_peg, to_peg)
+        print(f"Move disk {n} from {from_peg} to {to_peg}")
+        hanoi(n-1, aux_peg, to_peg, from_peg)
           </code></pre>
         </div>
       </div>

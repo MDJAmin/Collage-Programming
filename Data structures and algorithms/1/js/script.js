@@ -5,6 +5,9 @@ const towers = {
   C: document.getElementById("C"),
 };
 
+const diskCountDisplay = document.getElementById("diskCountDisplay");
+const increaseDisk = document.getElementById("increaseDisk");
+const decreaseDisk = document.getElementById("decreaseDisk");
 const message = document.getElementById("message");
 const nextBtn = document.getElementById("nextBtn");
 const backBtn = document.getElementById("backBtn");
@@ -13,6 +16,9 @@ const algoBtn = document.getElementById("algoBtn");
 const modal = document.getElementById("algoModal");
 const closeModal = document.getElementById("closeModal");
 
+let diskCount = 4;
+const maxDisks = 5;
+const minDisks = 1;
 let moves = [];
 let currentMove = 0;
 
@@ -21,7 +27,7 @@ function setupDisks() {
   towers.B.innerHTML = '<div class="rod"></div>';
   towers.C.innerHTML = '<div class="rod"></div>';
 
-  for (let i = 4; i >= 1; i--) {
+  for (let i = diskCount; i >= 1; i--) {
     const disk = document.createElement("div");
     disk.className = `disk disk${i}`;
     disk.textContent = `Disk ${i}`;
@@ -58,9 +64,12 @@ function nextStep() {
       } from tower ${from} → ${to}`;
     }
     currentMove++;
-    if (currentMove === moves.length) {
-      message.textContent = "🎉 Congratulations! All disks moved successfully in 15 moves!";
-    }
+if (currentMove === moves.length) {
+  const diskWord = diskCount === 1 ? "disk" : "disks";
+  const moveWord = moves.length === 1 ? "move" : "moves";
+  message.textContent = `🎉 Congratulations! ${diskCount} ${diskWord} moved successfully in ${moves.length} ${moveWord}!`;
+}
+
   }
   updateButtons();
 }
@@ -86,7 +95,7 @@ function resetGame() {
   setupDisks();
   moves = [];
   currentMove = 0;
-  hanoi(4, "A", "C", "B");
+  hanoi(diskCount, "A", "C", "B");
   message.textContent = 'Click "Next Step" to start.';
   updateButtons();
 }
@@ -94,6 +103,21 @@ function resetGame() {
 nextBtn.addEventListener("click", nextStep);
 backBtn.addEventListener("click", backStep);
 resetBtn.addEventListener("click", resetGame);
+increaseDisk.addEventListener("click", () => {
+  if (diskCount < maxDisks) {
+    diskCount++;
+    diskCountDisplay.textContent = `${diskCount} Disks`;
+    resetGame();
+  }
+});
+
+decreaseDisk.addEventListener("click", () => {
+  if (diskCount > minDisks) {
+    diskCount--;
+    diskCountDisplay.textContent = `${diskCount} Disks`;
+    resetGame();
+  }
+});
 
 algoBtn.addEventListener("click", () => {
   modal.style.display = "block";
